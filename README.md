@@ -14,6 +14,20 @@ At the Embedded Systems Laboratory (ESL) at EPFL, we have developed the COUGHVID
 
 # How to use it: 
 
+First install the Python library dependencies in a virtual environment.
+
+Pip:
+
+```
+pip install -r requirements.txt
+```
+
+Conda:
+
+```
+conda env create -f environment.yml
+```
+
 ## Notebooks
 The `coughvid_classification_example.ipynb` notebook illustrates the usage of the cough classifier model for removing unwanted recordings from a cough database.
 

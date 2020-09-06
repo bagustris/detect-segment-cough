@@ -15,15 +15,20 @@ At the Embedded Systems Laboratory (ESL) at EPFL, we have developed the COUGHVID
 # How to use it: 
 
 ## Notebooks
-The `example_adapted.ipynb` 
+The `coughvid_classification_example.ipynb` notebook illustrates the usage of the cough classifier model for removing unwanted recordings from a cough database.
 
 ## Source code
+
 ### DSP
+
 This file contains all digital signal processing functions, including filtering the recordings and classifying between cough and non-cough sounds.
+
 ### Features
+
 This file contains all of the functions used for the computation of audio signal features commonly used in cough classification.
 
 ## Models
+
 The  `cough_classifier` is an XGB model that can be loaded and used in the `classify_cough` function to classify whether or not a given recording contains cough sounds. The `cough_classification_scaler` is a feature scaler also used in this function.
 
 

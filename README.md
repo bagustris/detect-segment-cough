@@ -1,6 +1,4 @@
 
-![Alt text](coughvid_logo.png?raw=true "COUGHVID")
-
 # COUGHVID: A cough-based COVID-19 fast screening project
 
 # Overview: 
@@ -54,4 +52,4 @@ Please cite <our publication here>
 
 For questions or suggestions, please contact coughvid@epfl.ch
 
-To donate a COVID-19 cough sound to our database, please visit [the COUGHVID website](coughvid.epfl.ch)
+To donate a COVID-19 cough sound to our database, please visit coughvid.epfl.ch

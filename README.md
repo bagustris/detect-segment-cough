@@ -9,6 +9,9 @@ The World Health Organization (WHO) has reported that 67.7% of COVID-19 patients
 
 At the Embedded Systems Laboratory (ESL) at EPFL, we have developed the COUGHVID database, which is an extensive dataset of COVID-19 cough sounds from around the world, partially validated by expert pulmonologists. We contribute our data, signal preprocessing source code, cough classification algorithm, and feature extraction methods to assist the global research community in developing algorithms to automatically screen for COVID-19 based on cough sounds.
 
+# Data access
+
+The COUGHVID dataset can be downloaded from the following Zenodo link: https://zenodo.org/record/4048312#.X22TIGgzY2w
 
 # How to use it: 
 
@@ -46,10 +49,10 @@ The  `cough_classifier` is an XGB model that can be loaded and used in the `clas
 
 # Citation
 
-Please cite <our publication here>
+Please cite the following ArXiv pre-print: https://arxiv.org/abs/2009.11644
 
 # Contact
 
 For questions or suggestions, please contact coughvid@epfl.ch
 
-To donate a COVID-19 cough sound to our database, please visit coughvid.epfl.ch
+To donate a COVID-19 cough sound to our database, please visit https://coughvid.epfl.ch/

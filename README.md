@@ -32,7 +32,13 @@ conda env create -f environment.yml
 ## Notebooks
 The `coughvid_classification_example.ipynb` notebook illustrates the usage of the cough classifier model for removing unwanted recordings from a cough database.
 
+The `segmentation_and_SNR_example.ipynb` notebook is an example of how to use the automatic cough segmentation and SNR estimation algorithm.
+
 ## Source code
+
+### Convert files
+
+A quick function to automatically convert all of the compressed .webm and .ogg files in the COUGHVID dataset to the more usable .wav format. Note: you must have FFMPEG installed for this to work. 
 
 ### DSP
 
@@ -41,6 +47,10 @@ This file contains all digital signal processing functions, including filtering 
 ### Features
 
 This file contains all of the functions used for the computation of audio signal features commonly used in cough classification.
+
+### Segmentation
+
+This file contains a function for segmenting a recording into individual cough signals, and additional code to compute the SNR of the recording.
 
 ## Models
 

@@ -11,7 +11,7 @@ At the Embedded Systems Laboratory (ESL) at EPFL, we have developed the COUGHVID
 
 # Data access
 
-The COUGHVID dataset can be downloaded from the following Zenodo link: https://zenodo.org/record/4048312#.X22TIGgzY2w
+The COUGHVID dataset can be downloaded from the following Zenodo link: https://doi.org/10.5281/zenodo.4048311
 
 # How to use it: 
 
@@ -59,7 +59,9 @@ The  `cough_classifier` is an XGB model that can be loaded and used in the `clas
 
 # Citation
 
-Please cite the following ArXiv pre-print: https://arxiv.org/abs/2009.11644
+When using this resource, please cite the following publication: 
+
+Orlandic, L., Teijeiro, T. & Atienza, D. The COUGHVID crowdsourcing dataset, a corpus for the study of large-scale cough analysis algorithms. *Sci Data* **8,** 156 (2021). https://doi.org/10.1038/s41597-021-00937-4
 
 # Contact
 

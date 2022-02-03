@@ -1,5 +1,6 @@
 
-# COUGHVID: A cough-based COVID-19 fast screening project
+# COUGHVID: A cough-based COVID-19 fast screening project  
+A fork form https://c4science.ch/diffusion/10770/  
 
 # Overview: 
 

@@ -8,7 +8,7 @@ Input: audio files (.wav) to be predicted to have (multiple) cough sound
 Outpout: Cough or non-cough (detect), new wav files containing segmented cough
 
 
-# How to use it: 
+# Installation: 
 
 First install the Python library dependencies in a virtual environment.
 
@@ -30,11 +30,12 @@ conda env create -f environment.yml
 # Detect cough:
 python3 detect_cough.py -i input_file.wav
 # Segment cough: 
-python3 segment_cough - input_file.wav
+python3 segment_cough -i input_file.wav
 ```
  
 # Example
 ```
+# detect cough:
 bagus@L140MU:detect-cough$ /usr/bin/python3 detect_cough.py -i sample_recordings/cough.wav
 /home/bagus/.local/lib/python3.8/site-packages/sklearn/base.py:329: UserWarning: Trying to unpickle estimator LabelEncoder from version 0.22.1 when using version 1.0.2. This might lead to breaking code or invalid results. Use at your own risk. For more info please refer to:
 https://scikit-learn.org/stable/modules/model_persistence.html#security-maintainability-limitations
@@ -43,6 +44,10 @@ https://scikit-learn.org/stable/modules/model_persistence.html#security-maintain
 https://scikit-learn.org/stable/modules/model_persistence.html#security-maintainability-limitations
   warnings.warn(
 sample_recordings/cough.wav has probablity of cough: 0.988208472728729
+# segment cough
+bagus@L140MU:detect-cough$ ./segment_cough.py -i sample_recordings/cough.wav
+Write to ./cough-0.wav
+Write to ./cough-1.wav
 ```
 
 # Overview: 

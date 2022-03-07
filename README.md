@@ -2,6 +2,38 @@
 # COUGHVID: A cough-based COVID-19 fast screening project  
 A fork form https://c4science.ch/diffusion/10770/  
 
+# Input-output 
+Input: audio files (.wav) to be predicted to have cough sound  
+Outpout: Cough or non-cough
+
+
+## Usage  
+
+```
+import os
+import sys
+sys.path.append(os.path.abspath('../src'))
+from feature_class import features
+from DSP import classify_cough
+from scipy.io import wavfile
+import pickle
+
+# Import data and model
+data_folder = '../sample_recordings'
+loaded_model = pickle.load(open(os.path.join('../models', 'cough_classifier'), 'rb'))
+loaded_scaler = pickle.load(open(os.path.join('../models','cough_classification_scaler'), 'rb'))
+
+# Test cough recording
+filename = 'cough.wav'
+fs, x = wavfile.read(data_folder+'/'+filename)
+probability = classify_cough(x, fs, loaded_model, loaded_scaler)
+print("The file {0} has a {1}\% probability of being a cough".format(filename,round(probability*100,2)))
+
+# Ouput
+The file cough.wav has a 98.82\% probability of being a cough
+```
+
+
 # Overview: 
 
 In the wake of the COVID-19 pandemic, mass coronavirus testing has proven essential to governments in monitoring the spread of the disease, isolating infected individuals, and effectively “flattening the curve” of infections over time. However, this oropharyngeal swab test is physically invasive and must be performed by a trained clinician. This requires patients to travel to a laboratory facility to get tested, thereby potentially infecting others along the way. Ideally, testing would be performed noninvasively at no cost, and administered at the homes of potential patients to minimize contamination risk.

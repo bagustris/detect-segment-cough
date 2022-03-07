@@ -1,10 +1,11 @@
 
-# COUGHVID: A cough-based COVID-19 fast screening project  
-A fork form https://c4science.ch/diffusion/10770/  
+# Detect and Segment Cough
+This repository host the codes and model to **detect** and **segment** cough sound. As the names suggest, detect cough returns the probability of given audio file contains cough sound. Segment cough returns audio files contaning a single segmented cough sounds from given an audio file with many cough sounds (output of detect cough). These two methods (detect and segment cough) are the most important building blocks for developing cough-based diagnosis tool such as Covid-19. 
+
 
 # Input-output 
-Input: audio files (.wav) to be predicted to have cough sound  
-Outpout: Cough or non-cough
+Input: audio files (.wav) to be predicted to have (multiple) cough sound  
+Outpout: Cough or non-cough (detect), new wav files containing segmented cough
 
 
 # How to use it: 
@@ -23,12 +24,15 @@ Conda:
 conda env create -f environment.yml
 ```
 
-## Usage  
-
+## Usage 
+  
 ```
+# Detect cough:
 python3 detect_cough.py -i input_file.wav
+# Segment cough: 
+python3 segment_cough - input_file.wav
 ```
-
+ 
 # Example
 ```
 bagus@L140MU:detect-cough$ /usr/bin/python3 detect_cough.py -i sample_recordings/cough.wav
@@ -87,8 +91,5 @@ When using this resource, please cite the following publication:
 
 Orlandic, L., Teijeiro, T. & Atienza, D. The COUGHVID crowdsourcing dataset, a corpus for the study of large-scale cough analysis algorithms. *Sci Data* **8,** 156 (2021). https://doi.org/10.1038/s41597-021-00937-4
 
-# Contact
-
-For questions or suggestions, please contact coughvid@epfl.ch
-
-To donate a COVID-19 cough sound to our database, please visit https://coughvid.epfl.ch/
+# Reference  
+1. https://c4science.ch/diffusion/10770/  (original repo forked from)

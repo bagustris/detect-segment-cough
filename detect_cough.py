@@ -26,7 +26,7 @@ def main(input_file):
 
     fs,x = wavfile.read(input_file)
     prob = classify_cough(x, fs, model, scaler)
-    print(f"{input_file} has probablity of cough: {prob}")
+    print(f"{input_file} has probability of cough: {prob}")
     return prob
 
 if __name__ == '__main__':

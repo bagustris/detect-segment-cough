@@ -43,7 +43,7 @@ https://scikit-learn.org/stable/modules/model_persistence.html#security-maintain
 /home/bagus/.local/lib/python3.8/site-packages/sklearn/base.py:329: UserWarning: Trying to unpickle estimator StandardScaler from version 0.22.1 when using version 1.0.2. This might lead to breaking code or invalid results. Use at your own risk. For more info please refer to:
 https://scikit-learn.org/stable/modules/model_persistence.html#security-maintainability-limitations
   warnings.warn(
-sample_recordings/cough.wav has probablity of cough: 0.988208472728729
+sample_recordings/cough.wav has probability of cough: 0.988208472728729
 # segment cough
 bagus@L140MU:detect-cough$ ./segment_cough.py -i sample_recordings/cough.wav
 Write to ./cough-0.wav

@@ -21,6 +21,7 @@ def main(input_file, dir_output='./', fs_out=16000):
                  cough_segments[i], 
                  fs
         )
+        print(f"Write to {dir_output}{os.path.basename(input_file).split('.')[0]}-{str(i)}.wav")
 
 
 

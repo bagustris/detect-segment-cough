@@ -23,6 +23,7 @@ def segment_dir(dir_input, dir_output):
         cough_segments, cough_mask = segment_cough(x, fs, cough_padding=0)
         for j in range(0,len(cough_segments)):
             sf.write(dir_output + i[:-4] + '-' + str(j) + '.wav', cough_segments[j], fs)
+            print(f"Write {dir_output + i[:-4] + '-' + str(j) + '.wav'})
             
 
 # process positive and negative files

@@ -12,7 +12,7 @@ from scipy.signal.windows import get_window
 
 import os
 
-from feature_class import features 
+from .feature_class import features 
 
 
 def classify_cough(x, fs, model, scaler):

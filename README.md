@@ -7,6 +7,9 @@ This repository host the codes and model to **detect** and **segment** cough sou
 Input: audio files (.wav) to be predicted to have (multiple) cough sound  
 Outpout: Cough or non-cough (detect), new wav files containing segmented cough
 
+# Supported Python Version
+I tested that this model works on Python version >= 3.7.0.  
+Less than version above (e.g., python3.6), the output probability will be "0".
 
 # Installation: 
 
@@ -18,13 +21,7 @@ Pip:
 pip install -r requirements.txt
 ```
 
-Conda:
-
-```
-conda env create -f environment.yml
-```
-
-## Usage 
+## Command Line Usage 
   
 ```
 # Detect cough:
@@ -33,6 +30,24 @@ python3 detect_cough.py -i input_file.wav
 python3 segment_cough -i input_file.wav
 ```
  
+## Python Usage
+``` 
+# detect cough, see notebooks for segment cough
+import sys
+sys.path.append('./src')
+from src.feature_class import features
+from src.DSP import classify_cough
+from scipy.io import wavfile
+import pickle
+
+input_file = './sample_recordings/cough.wav'
+model = pickle.load(open('./models/cough_classifier', 'rb'))
+scaler = pickle.load(open('./models/cough_classification_scaler', 'rb'))
+
+fs, x = wavfile.read(input_file)
+prob = classify_cough(x, fs, model, scaler)
+print(f"{input_file} has probability of cough: {prob}")
+```
 # Example
 ```
 # detect cough:

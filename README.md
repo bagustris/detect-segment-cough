@@ -1,27 +1,25 @@
 
 # Detect and Segment Cough
-This repository host the codes and model to **detect** and **segment** cough sound. As the names suggest, detect cough returns the probability of given audio file contains cough sound. Segment cough returns audio files contaning a single segmented cough sounds from given an audio file with many cough sounds (output of detect cough). These two methods (detect and segment cough) are the most important building blocks for developing cough-based diagnosis tool such as Covid-19. 
+This repository hosts the codes and models to **, detect** and **segment** cough sound. As the names suggest, detect cough returns the probability of a given audio file containing cough sound. Segment cough returns audio files containing a single segmented cough sound from given an audio file with many cough sounds (output of detect cough). These two methods (detect and segment cough) are the most important building blocks for developing cough-based diagnosis tools such as Covid-19. 
 
 
 # Input-output 
 Input: audio files (.wav) to be predicted to have (multiple) cough sound  
-Outpout: Cough or non-cough (detect), new wav files containing segmented cough
+Output: Cough or non-cough (detect), new wav files containing segmented cough
 
-# Supported Python Version
+# **Supported Python Version and Model** (IMPORTANT!)
 I tested that this model works on Python version >= 3.7.0.  
-Less than version above (e.g., python3.6), the output probability will be "0".
+Less than the version above (e.g., python3.6), the output probability will be "0". The xgboost package must be version 0.90.
 
 # Installation: 
 
-First install the Python library dependencies in a virtual environment.
-
-Pip:
+First, install the Python library dependencies in a virtual environment via pip.
 
 ```
 pip install -r requirements.txt
 ```
 
-## Command Line Usage 
+## API/Command Line Usage 
   
 ```
 # Detect cough:
@@ -52,7 +50,7 @@ print(f"{input_file} has probability of cough: {prob}")
 ```
 # detect cough:
 bagus@L140MU:detect-cough$ /usr/bin/python3 detect_cough.py -i sample_recordings/cough.wav
-/home/bagus/.local/lib/python3.8/site-packages/sklearn/base.py:329: UserWarning: Trying to unpickle estimator LabelEncoder from version 0.22.1 when using version 1.0.2. This might lead to breaking code or invalid results. Use at your own risk. For more info please refer to:
+/home/bagus/.local/lib/python3.8/site-packages/sklearn/base.py:329: UserWarning: Trying to unpickle estimator LabelEncoder from version 0.22.1 when using version 1.0.2. This might lead to breaking code or invalid results. Use at your own risk. For more info, please refer to:
 https://scikit-learn.org/stable/modules/model_persistence.html#security-maintainability-limitations
   warnings.warn(
 /home/bagus/.local/lib/python3.8/site-packages/sklearn/base.py:329: UserWarning: Trying to unpickle estimator StandardScaler from version 0.22.1 when using version 1.0.2. This might lead to breaking code or invalid results. Use at your own risk. For more info please refer to:
@@ -90,7 +88,7 @@ A quick function to automatically convert all of the compressed .webm and .ogg f
 
 ### DSP
 
-This file contains all digital signal processing functions, including filtering the recordings and classifying between cough and non-cough sounds.
+This file contains all-digital signal processing functions, including filtering the recordings and classifying between cough sounds and non-cough sounds.
 
 ### Features
 
@@ -98,14 +96,14 @@ This file contains all of the functions used for the computation of audio signal
 
 ### Segmentation
 
-This file contains a function for segmenting a recording into individual cough signals, and additional code to compute the SNR of the recording.
+This file contains a function for segmenting a recording into individual cough signals and additional code to compute the SNR of the recording.
 
 ## Models
 
 The  `cough_classifier` is an XGB model that can be loaded and used in the `classify_cough` function to classify whether or not a given recording contains cough sounds. The `cough_classification_scaler` is a feature scaler also used in this function.
 
 
-# Citation
+# Citation 
 
 When using this resource, please cite the following publication: 
 
@@ -113,3 +111,8 @@ Orlandic, L., Teijeiro, T. & Atienza, D. The COUGHVID crowdsourcing dataset, a c
 
 # Reference  
 1. https://c4science.ch/diffusion/10770/  (original repo forked from)
+
+# Changealog  
+- 21/03/2022: Submit paper to interspeech about cough segmentation, commit: f330c2fb90431c736ee495b668ac0b0e0994b0cf  
+- 08/02/2022: Rename repo from `detect-cough` to `detect-segment-cough`
+- 03/02/2022: Initial version, forked from EPFL's original repo

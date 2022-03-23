@@ -9,7 +9,7 @@ def segment_cough(x,fs, cough_padding=0.2,min_cough_len=0.2, th_l_multiplier = 0
     *fs (float): sampling frequency in Hz
     *cough_padding (float): number of seconds added to the beginning and end of each detected cough to make sure coughs are not cut short
     *min_cough_length (float): length of the minimum possible segment that can be considered a cough
-    *th_l_multiplier (float): multiplier of the RMS energy used as a lower threshold of the hysteresis comparator
+    *th_l_multiplier (float): multiplier of the RMS energy used as a low threshold of the hysteresis comparator
     *th_h_multiplier (float): multiplier of the RMS energy used as a high threshold of the hysteresis comparator
     
     Outputs:
@@ -19,12 +19,12 @@ def segment_cough(x,fs, cough_padding=0.2,min_cough_len=0.2, th_l_multiplier = 0
     cough_mask = np.array([False]*len(x))
     
 
-    #Define hysteresis thresholds
+    # define hysteresis thresholds
     rms = np.sqrt(np.mean(np.square(x)))
     seg_th_l = th_l_multiplier * rms
-    seg_th_h =  th_h_multiplier*rms
+    seg_th_h = th_h_multiplier * rms
 
-    #Segment coughs
+    # segment coughs
     coughSegments = []
     padding = round(fs*cough_padding)
     min_cough_samples = round(fs*min_cough_len)
@@ -36,6 +36,7 @@ def segment_cough(x,fs, cough_padding=0.2,min_cough_len=0.2, th_l_multiplier = 0
     
     for i, sample in enumerate(x**2):
         if cough_in_progress:
+            # counting and adding cough samples
             if sample<seg_th_l:
                 below_th_counter += 1
                 if below_th_counter > tolerance:
@@ -44,14 +45,17 @@ def segment_cough(x,fs, cough_padding=0.2,min_cough_len=0.2, th_l_multiplier = 0
                     if (cough_end+1-cough_start-2*padding>min_cough_samples):
                         coughSegments.append(x[cough_start:cough_end+1])
                         cough_mask[cough_start:cough_end+1] = True
+            # cough end
             elif i == (len(x)-1):
                 cough_end=i
                 cough_in_progress = False
                 if (cough_end+1-cough_start-2*padding>min_cough_samples):
                     coughSegments.append(x[cough_start:cough_end+1])
+            # reset counter for number of sample tolerance 
             else:
                 below_th_counter = 0
         else:
+            # start cough
             if sample>seg_th_h:
                 cough_start = i-padding if (i-padding >=0) else 0
                 cough_in_progress = True

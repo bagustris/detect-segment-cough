@@ -1,6 +1,6 @@
 
 # Detect and Segment Cough
-This repository hosts the codes and models to **, detect** and **segment** cough sound. As the names suggest, detect cough returns the probability of a given audio file containing cough sound. Segment cough returns audio files containing a single segmented cough sound from given an audio file with many cough sounds (output of detect cough). These two methods (detect and segment cough) are the most important building blocks for developing cough-based diagnosis tools such as Covid-19. 
+This repository hosts the codes and models to **detect** and **segment** cough sounds. As the names suggest, detecting a cough returns the probability of a given audio file containing a cough sound. Segment cough returns audio files containing a single segmented cough sound from given an audio file with many cough sounds (output of detect cough). These two methods (detect and segment cough) are the most important building blocks for developing cough-based diagnosis tools such as COVID-19. 
 
 
 # Input-output 

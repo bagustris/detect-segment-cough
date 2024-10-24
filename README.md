@@ -107,12 +107,15 @@ The  `cough_classifier` is an XGB model that can be loaded and used in the `clas
 
 When using this resource, please cite the following publication: 
 
-Orlandic, L., Teijeiro, T. & Atienza, D. The COUGHVID crowdsourcing dataset, a corpus for the study of large-scale cough analysis algorithms. *Sci Data* **8,** 156 (2021). https://doi.org/10.1038/s41597-021-00937-4
+
+1. Orlandic, L., Teijeiro, T. & Atienza, D. The COUGHVID crowdsourcing dataset, a corpus for the study of large-scale cough analysis algorithms. *Sci Data* **8,** 156 (2021). https://doi.org/10.1038/s41597-021-00937-4 
+
+2. B. T. Atmaja, Zanjabila, Suyanto, and A. Sasou, “Comparing hysteresis comparator and RMS threshold methods for automatic single cough segmentations,” Int. J. Inf. Technol., no. 0123456789, Dec. 2023, doi: 10.1007/s41870-023-01626-8.
 
 # Reference  
 1. https://c4science.ch/diffusion/10770/  (original repo forked from)
 
-# Changealog  
+# Changelog  
 - 21/03/2022: Submit paper to interspeech about cough segmentation, commit: f330c2fb90431c736ee495b668ac0b0e0994b0cf  
 - 08/02/2022: Rename repo from `detect-cough` to `detect-segment-cough`
 - 03/02/2022: Initial version, forked from EPFL's original repo

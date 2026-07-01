@@ -32,11 +32,11 @@ def segment(input_file, dir_output='./', fs_out=16000):
 
 
 def add_arguments(parser):
-    parser.add_argument('-i', '--input_file', help='input file', required=True)
+    parser.add_argument('-f', '--file', help='input file', required=True)
     parser.add_argument('-o', '--output_dir', help='output directory',
-                        default='./', type=str)
+                        default=None, type=str)
     parser.add_argument('-fs', '--fs_out', help='output sampling rate',
-                        default=16000, type=int)
+                        default=None, type=int)
     return parser
 
 
@@ -45,8 +45,12 @@ def build_parser(prog=None):
 
 
 def main(argv=None):
+    from coughkit.config import apply_config
     args = build_parser().parse_args(argv)
-    segment(args.input_file, args.output_dir, args.fs_out)
+    apply_config(args, 'segment')
+    args.output_dir = args.output_dir or './'
+    args.fs_out     = args.fs_out     or 16000
+    segment(args.file, args.output_dir, args.fs_out)
 
 
 if __name__ == '__main__':

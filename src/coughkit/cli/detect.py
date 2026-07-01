@@ -27,7 +27,7 @@ def detect(input_file):
 
 
 def add_arguments(parser):
-    parser.add_argument('-i', '--input', required=True,
+    parser.add_argument('-f', '--file', required=True,
                         help='Path to input audio file')
     return parser
 
@@ -38,7 +38,7 @@ def build_parser(prog=None):
 
 def main(argv=None):
     args = build_parser().parse_args(argv)
-    detect(args.input)
+    detect(args.file)
 
 
 if __name__ == '__main__':

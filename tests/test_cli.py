@@ -58,7 +58,7 @@ def test_detect_subcommand_dispatches_to_existing_cli(monkeypatch):
 
     monkeypatch.setattr(detect_cli, "detect", fake_detect)
 
-    main_cli.main(["detect", "-i", "input.wav"])
+    main_cli.main(["detect", "-f", "input.wav"])
 
     assert called == {"input_file": "input.wav"}
 
@@ -73,7 +73,7 @@ def test_segment_subcommand_dispatches_to_existing_cli(monkeypatch):
 
     monkeypatch.setattr(segment_cli, "segment", fake_segment)
 
-    main_cli.main(["segment", "-i", "input.wav", "-o", "segments", "-fs", "8000"])
+    main_cli.main(["segment", "-f", "input.wav", "-o", "segments", "-fs", "8000"])
 
     assert called == {
         "input_file": "input.wav",
@@ -86,7 +86,8 @@ def test_count_subcommand_dispatches_to_existing_cli(monkeypatch):
     called = {}
 
     def fake_count(input_file=None, use_mic=False, duration=None, fs_out=16000,
-                   threshold=count_cli.DEFAULT_THRESHOLD, verbose=False):
+                   threshold=count_cli.DEFAULT_THRESHOLD, verbose=False,
+                   show_mic_level=True):
         called["input_file"] = input_file
         called["use_mic"] = use_mic
         called["duration"] = duration
@@ -96,7 +97,7 @@ def test_count_subcommand_dispatches_to_existing_cli(monkeypatch):
 
     monkeypatch.setattr(count_cli, "count", fake_count)
 
-    main_cli.main(["count", "-i", "input.wav", "-fs", "8000", "-t", "0.25", "-v"])
+    main_cli.main(["count", "-f", "input.wav", "-fs", "8000", "-t", "0.25", "-v"])
 
     assert called == {
         "input_file": "input.wav",

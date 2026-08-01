@@ -7,6 +7,7 @@ above a probability threshold.
 """
 
 import sys
+import warnings
 from pathlib import Path
 
 import librosa
@@ -20,18 +21,38 @@ from coughkit.segmentation import segment_cough
 
 DEFAULT_THRESHOLD = 0.5
 
+# preprocess_cough() always resamples to 2 * its 6 kHz cutoff internally;
+# loading below that starves the classifier of content it was trained on.
+MIN_RELIABLE_FS = 12000
+
+
+def _warn_if_low_fs(fs_out):
+    if fs_out < MIN_RELIABLE_FS:
+        warnings.warn(
+            f"fs_out={fs_out} is below {MIN_RELIABLE_FS} Hz, the sampling rate "
+            "the cough classifier's feature pipeline expects; classification "
+            "accuracy may degrade significantly.",
+            stacklevel=3,
+        )
+
 # Streaming VAD parameters
-_HIGH_MULT   = 2.0          # chunk power must exceed this × background to start event
-_LOW_MULT    = 0.1          # chunk power must fall below this × background to be "silent"
-_END_SILENCE = 0.3          # seconds of silence required to close an event
-_MIN_EVENT   = 0.2          # minimum event length in seconds
-_EMA_ALPHA   = 0.05         # background power EMA update rate
+_HIGH_MULT    = 2.0          # chunk power must exceed this × background to start event
+_LOW_MULT     = 0.1          # chunk power must fall below this × background to be "silent"
+_END_SILENCE  = 0.3          # seconds of silence required to close an event
+_MIN_EVENT    = 0.2          # minimum event length in seconds
+_MAX_EVENT    = 2.0          # safety cap: force-close an event this long even without silence
+                              # (kept short - the classified buffer is real
+                              # cough + trailing ambient audio, and dilution
+                              # from trailing noise pulls its probability down)
+_CALIBRATION  = 0.5          # seconds of leading audio used to seed background power
+_EMA_ALPHA    = 0.05         # background power EMA update rate
 
 
 def _load_file(input_file, fs_out=16000):
     input_path = Path(input_file)
     if not input_path.is_file():
         raise FileNotFoundError(f"Input audio file not found: {input_path}")
+    _warn_if_low_fs(fs_out)
     x, fs = librosa.load(str(input_path), sr=fs_out)
     return x, fs
 
@@ -42,17 +63,25 @@ def _count_mic_streaming(duration=None, fs_out=16000, threshold=DEFAULT_THRESHOL
 
     Accumulates high-energy chunks into events.  When the signal drops below
     the low threshold for _END_SILENCE seconds, the event is classified.
-    Background power is tracked with an EMA so the thresholds adapt to
-    ambient noise without requiring a calibration step.
+    Background power is first seeded from _CALIBRATION seconds of leading
+    audio (a fixed 1e-5 seed is far below real-room ambient power, ~1e-4,
+    which would latch the detector open for the whole session), then tracked
+    with an EMA so the thresholds keep adapting to ambient noise.  A
+    _MAX_EVENT cap force-closes runaway events as a safety net.
     """
+    _warn_if_low_fs(fs_out)
     model = load_cough_classifier()
     scaler = load_scaler()
 
     end_sil_samples   = int(_END_SILENCE * fs_out)
     min_event_samples = int(_MIN_EVENT * fs_out)
-    limit_samples     = int(duration * fs_out) if duration else None
+    max_event_samples = int(_MAX_EVENT * fs_out)
+    calib_samples     = int(_CALIBRATION * fs_out)
+    limit_samples     = int(duration * fs_out) if duration is not None else None
 
-    bg_power      = 1e-5
+    bg_power      = None
+    calib_powers  = []
+    calib_count   = 0
     in_event      = False
     event_buf     = np.zeros(0, dtype=np.float32)
     silence_count = 0
@@ -60,7 +89,7 @@ def _count_mic_streaming(duration=None, fs_out=16000, threshold=DEFAULT_THRESHOL
     recorded      = 0
 
     print("Recording… (press Ctrl+C to stop)" +
-          (f" [max {duration}s]" if duration else ""))
+          (f" [max {duration}s]" if duration is not None else ""))
 
     def _maybe_count(audio):
         nonlocal total
@@ -79,6 +108,17 @@ def _count_mic_streaming(duration=None, fs_out=16000, threshold=DEFAULT_THRESHOL
             if show_mic_level:
                 render_mic_level(chunk, suffix=f"{total} cough(s)")
 
+            if bg_power is None:
+                calib_powers.append(cp)
+                calib_count += len(chunk)
+                if calib_count < calib_samples:
+                    if limit_samples is not None and recorded >= limit_samples:
+                        break
+                    continue
+                # Calibration window just closed: seed bg_power and let this
+                # same chunk fall through to normal event detection below.
+                bg_power = max(float(np.mean(calib_powers)), 1e-6)
+
             if not in_event:
                 if cp > _HIGH_MULT * bg_power:
                     in_event = True
@@ -88,7 +128,13 @@ def _count_mic_streaming(duration=None, fs_out=16000, threshold=DEFAULT_THRESHOL
                     bg_power = (1 - _EMA_ALPHA) * bg_power + _EMA_ALPHA * cp
             else:
                 event_buf = np.concatenate([event_buf, chunk])
-                if cp < _LOW_MULT * bg_power:
+                if len(event_buf) >= max_event_samples:
+                    _maybe_count(event_buf)
+                    in_event = False
+                    event_buf = np.zeros(0, dtype=np.float32)
+                    silence_count = 0
+                    bg_power = (1 - _EMA_ALPHA) * bg_power + _EMA_ALPHA * cp
+                elif cp < _LOW_MULT * bg_power:
                     silence_count += len(chunk)
                     if silence_count >= end_sil_samples:
                         if len(event_buf) >= min_event_samples:
@@ -101,7 +147,7 @@ def _count_mic_streaming(duration=None, fs_out=16000, threshold=DEFAULT_THRESHOL
                 else:
                     silence_count = 0
 
-            if limit_samples and recorded >= limit_samples:
+            if limit_samples is not None and recorded >= limit_samples:
                 break
     except KeyboardInterrupt:
         sys.stdout.write("\n")

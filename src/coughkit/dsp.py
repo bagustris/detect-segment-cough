@@ -26,11 +26,11 @@ def classify_cough(x, fs, model, scaler):
     """
     x = np.asarray(x)
     if x.size == 0 or np.max(np.abs(x)) == 0:
-        return 0
+        return 0.0
 
     x,fs = preprocess_cough(x,fs)
     if x.size < MIN_FEATURE_SAMPLES:
-        return 0
+        return 0.0
 
     data = (fs,x)
     feature_values_vec = []

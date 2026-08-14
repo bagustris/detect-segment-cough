@@ -1,3 +1,5 @@
+
+
 # Detect and Segment Cough
 This repository hosts code and models to **detect**, **segment**, and **count** cough sounds. Detecting a cough returns the probability that an audio file contains cough sounds. Segmenting coughs writes separate WAV files for individual detected cough events. Counting classifies each segment and reports the total number of coughs — including in real time from a microphone.
 
@@ -12,7 +14,7 @@ This repository hosts code and models to **detect**, **segment**, and **count** 
 
 # **Supported Python Version and Model** (IMPORTANT!)
 
-The current `requirements.txt` targets modern Python versions, including Python 3.13, and uses CPU-only XGBoost via `xgboost-cpu`.
+The current `pyproject.toml` targets modern Python versions (>=3.11) and uses CPU-only XGBoost via `xgboost-cpu`.
 
 The original bundled classifier pickle (`models/cough_classifier`) was produced with XGBoost 0.90, which cannot be unpickled by modern XGBoost. Runtime detection now loads `models/cough_classifier_migrated.json`, a stable model-IO export migrated from that legacy pickle. The scaler (`models/cough_classification_scaler`) is still an older `scikit-learn` pickle, so Python may warn when loading it with newer packages. Treat model outputs from a newer runtime as compatibility-sensitive and validate them against known recordings before production use.
 
